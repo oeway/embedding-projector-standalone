@@ -9676,6 +9676,7 @@ paper-icon-button[active] {
   display: flex;
   flex-direction: column;
   font-size: 14px;
+  overflow: auto;
 }
 
 .ink-panel h4 {
@@ -11426,7 +11427,7 @@ properties:{label:String,message:String}}));document.registerElement(Zd.prototyp
    display: flex;
    flex-direction: column;
    /* Account for the bookmark pane at the bottom */
-   height: calc(100% - 55px);
+   /* height: calc(100% - 55px); */
 }
 
 .container {
@@ -11874,7 +11875,6 @@ this.metadata=b;this.label=""+this.pointMetadata[this.labelOption]}};b.prototype
 <div id="main">
   <div class="ink-panel-header">
     <div class="ink-tab-group">
-
       <div data-tab="tsne" id="tsne-tab" class="ink-tab projection-tab">t-SNE</div>
       <paper-tooltip for="tsne-tab" position="bottom" animation-delay="0" fit-to-visible-bounds>
         t-distributed stochastic neighbor embedding
@@ -11889,7 +11889,6 @@ this.metadata=b;this.label=""+this.pointMetadata[this.labelOption]}};b.prototype
       <paper-tooltip for="custom-tab" position="bottom" animation-delay="0" fit-to-visible-bounds>
         Search for two vectors upon which to project all points.
       </paper-tooltip>
-
     </div>
   </div>
   <div class="container">
@@ -12240,7 +12239,6 @@ tSNEis3d:{type:Boolean,value:!0,observer:"_tsneDimensionToggleObserver"},pcaComp
 #bookmark-panel-container {
   bottom: 60px;
   position: absolute;
-  display: none;
 }
 
 .ink-fab {
