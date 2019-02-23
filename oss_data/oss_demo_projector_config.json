@@ -1,6 +1,16 @@
 {
   "embeddings": [
     {
+      "tensorName": "Mnist with images",
+      "tensorShape": [10000, 784],
+      "tensorPath": "oss_data/mnist_10k_784d_tensors.bytes",
+      "metadataPath": "oss_data/mnist_10k_784d_labels.tsv",
+      "sprite": {
+        "imagePath": "oss_data/mnist_10k_sprite.png",
+        "singleImageDim": [28, 28]
+      }
+    },
+    {
       "tensorName": "Word2Vec 10K",
       "tensorShape": [10000, 200],
       "tensorPath": "oss_data/word2vec_10000_200d_tensors.bytes",
@@ -12,16 +22,6 @@
       "tensorPath": "oss_data/word2vec_full_200d_tensors.bytes",
       "metadataPath": "oss_data/word2vec_full_200d_labels.tsv",
       "bookmarksPath": "oss_data/word2vec_full_bookmarks.txt"
-    },
-    {
-      "tensorName": "Mnist with images",
-      "tensorShape": [10000, 784],
-      "tensorPath": "oss_data/mnist_10k_784d_tensors.bytes",
-      "metadataPath": "oss_data/mnist_10k_784d_labels.tsv",
-      "sprite": {
-        "imagePath": "oss_data/mnist_10k_sprite.png",
-        "singleImageDim": [28, 28]
-      }
     },
     {
       "tensorName": "Iris",
