@@ -9885,6 +9885,83 @@ var td=function(){function a(a){this.projectorConfigPath=a}a.prototype.getEmbedd
 lc(a,"fetching projector config")};g.onload=function(){var a=JSON.parse(g.responseText);Y(null,e);b.projectorConfig=a;c(a)};g.send()};a.prototype.retrieveTensor=function(a,c,d){a=this.getEmbeddingInfo(c);var b=""+a.tensorPath;if(".bytes"===a.tensorPath.substr(-6))ed(this.getEmbeddingInfo(c),b,d);else{Y("Fetching tensors...","tensors");var g=new XMLHttpRequest;g.open("GET",b);g.responseType="arraybuffer";g.onerror=function(){lc(g.responseText,"fetching tensors")};g.onload=function(){hd(g.response).then(function(a){d(new ad(a))})};
 g.send()}};a.prototype.retrieveSpriteAndMetadata=function(a,c,d){a=this.getEmbeddingInfo(c);c=null;a.sprite&&a.sprite.imagePath&&(c=a.sprite.imagePath);sd(a.metadataPath,c,a.sprite,d)};a.prototype.getBookmarks=function(a,c,d){a=this.getEmbeddingInfo(c);var b=Y("Fetching bookmarks..."),g=new XMLHttpRequest;g.open("GET",a.bookmarksPath);g.onerror=function(){lc(g.responseText)};g.onload=function(){var a=JSON.parse(g.responseText);Y(null,b);d(a)};g.send()};return a}();
 </script>
+<script>//~~WEBPATH~~/vz-projector/data-provider-config.js
+var data_provider_config = function() {
+    function a(a) {
+        var temp = new Array();
+        temp = a.tensorshape.split(",");
+        for (x in temp ) {
+          temp[x] = parseInt(temp[x], 10);
+        }
+        this.projectorConfig = {
+          embeddings: [
+            {
+              tensorName: a.tensorname,
+              tensorShape: temp,
+              tensorPath: a.tensorpath,
+              metadataPath: a.metadatapath
+            }
+          ],
+          modelCheckpointPath: a.modelcheckpointpath || "Demo datasets"
+        };
+    }
+    a.prototype.getEmbeddingInfo = function(a) {
+        for (var b = this.projectorConfig.embeddings, d = 0; d < b.length; d++) {
+            var e = b[d];
+            if (e.tensorName === a) return e
+        }
+        return null
+    };
+    a.prototype.retrieveRuns = function(a) {
+        a(["Demo"])
+    };
+    a.prototype.retrieveProjectorConfig = function(a, c) {
+        c(this.projectorConfig)
+    };
+    a.prototype.retrieveTensor = function(a, c, d) {
+        a = this.getEmbeddingInfo(c);
+        var b = "" + a.tensorPath;
+        if (".bytes" === a.tensorPath.substr(-6)) ed(this.getEmbeddingInfo(c), b, d);
+        else {
+            Y("Fetching tensors...", "tensors");
+            var g = new XMLHttpRequest;
+            g.open("GET", b);
+            g.responseType = "arraybuffer";
+            g.onerror = function() {
+                lc(g.responseText, "fetching tensors")
+            };
+            g.onload = function() {
+                hd(g.response).then(function(a) {
+                    d(new ad(a))
+                })
+            };
+            g.send()
+        }
+    };
+    a.prototype.retrieveSpriteAndMetadata = function(a, c, d) {
+        a = this.getEmbeddingInfo(c);
+        c = null;
+        a.sprite && a.sprite.imagePath && (c = a.sprite.imagePath);
+        sd(a.metadataPath, c, a.sprite, d)
+    };
+    a.prototype.getBookmarks = function(a, c, d) {
+        a = this.getEmbeddingInfo(c);
+        var b = Y("Fetching bookmarks..."),
+            g = new XMLHttpRequest;
+        g.open("GET", a.bookmarksPath);
+        g.onerror = function() {
+            lc(g.responseText)
+        };
+        g.onload = function() {
+            var a = JSON.parse(g.responseText);
+            Y(null, b);
+            d(a)
+        };
+        g.send()
+    };
+    return a
+}();
+</script>
 <script>//~~WEBPATH~~/vz-projector/data-provider-proto.js
 var ud=function(){function a(a){this.dataProto=a}a.prototype.retrieveRuns=function(a){a(["proto"])};a.prototype.retrieveProjectorConfig=function(a,c){c({modelCheckpointPath:"proto",embeddings:[{tensorName:"proto",tensorShape:this.dataProto.shape,metadataPath:"proto"}]})};a.prototype.retrieveTensor=function(a,c,d){d(this.flatArrayToDataset(this.dataProto.tensor))};a.prototype.retrieveSpriteAndMetadata=function(a,c,d){a=this.dataProto.metadata.columns.map(function(a){return a.name});var b=this.dataProto.shape[0],
 g=Array(b);this.dataProto.metadata.columns.forEach(function(a){for(var c=a.numericValues||a.stringValues,d=0;d<b;d++)g[d]=g[d]||{},g[d][a.name]=c[d]});d({stats:qd(a,g),pointsInfo:g})};a.prototype.getBookmarks=function(a,c,d){return d([])};a.prototype.flatArrayToDataset=function(a){var b=[],d=this.dataProto.shape[0],e=this.dataProto.shape[1];if(d*e!==a.length)throw"The shape doesn't match the length of the flattened array";for(var g=0;g<d;g++){var h=g*e;b.push({vector:new Float32Array(a.slice(h,h+
@@ -12365,7 +12442,9 @@ this.projectorScatterPlotAdapter.updateScatterPlotAttributes();this.adjustSelect
 this.dataSetFilterIndices=[];this.adjustSelectionAndHover(b)};b.prototype.notifySelectionChanged=function(a){var b=this;this.selectedPointIndices=a;var c=[];1===a.length?(c=this.dataSet.findNeighbors(a[0],this.inspectorPanel.distFunc,this.inspectorPanel.numNN),this.metadataCard.updateMetadata(this.dataSet.points[a[0]].metadata)):this.metadataCard.updateMetadata(null);this.selectionChangedListeners.forEach(function(a){return a(b.selectedPointIndices,c)})};b.prototype.registerHoverListener=function(a){this.hoverListeners.push(a)};
 b.prototype.notifyHoverOverPoint=function(a){this.hoverListeners.forEach(function(b){return b(a)})};b.prototype.registerProjectionChangedListener=function(a){this.projectionChangedListeners.push(a)};b.prototype.notifyProjectionChanged=function(a){this.projectionChangedListeners.forEach(function(b){return b(a)})};b.prototype.registerDistanceMetricChangedListener=function(a){this.distanceMetricChangedListeners.push(a)};b.prototype.notifyDistanceMetricChanged=function(a){this.distanceMetricChangedListeners.forEach(function(b){return b(a)})};
 b.prototype._dataProtoChanged=function(a){a=a?JSON.parse(a):null;this.initializeDataProvider(a)};b.prototype.makeDefaultPointsInfoAndStats=function(a){var b=[];a.forEach(function(a){var c={};c.__index__=a.index;b.push(c)});return[b,[{name:"__index__",isNumeric:!1,tooManyUniqueValues:!0,min:0,max:b.length-1}]]};b.prototype.initializeDataProvider=function(a){if("demo"===this.servingMode){if(a=window.location.search){a=-1!==a.indexOf("?")?a.split("?")[1]:a;a.indexOf("#")&&(a=a.split("#")[0]);a=a.split("\x26");
-for(var b={},c=0;c<a.length;c++){var g=a[c].split("\x3d");b[g[0].toLowerCase()]=decodeURIComponent(g[1])}a=b}else a={};this.dataProvider=new td("config"in a?a.config:this.projectorConfigJsonPath)}else if("server"===this.servingMode){if(!this.routePrefix)throw"route-prefix is a required parameter";this.dataProvider=new vd(this.routePrefix)}else"proto"===this.servingMode&&null!=a&&(this.dataProvider=new ud(a));this.dataPanel.initialize(this,this.dataProvider)};b.prototype.getLegendPointColorer=function(a){var b=
+for(var b={},c=0;c<a.length;c++){var g=a[c].split("\x3d");b[g[0].toLowerCase()]=decodeURIComponent(g[1])}a=b}else a={};
+if("tensorname"in a && "tensorpath"in a){this.dataProvider=new data_provider_config(a)}
+else this.dataProvider=new td("config"in a?a.config:this.projectorConfigJsonPath)}else if("server"===this.servingMode){if(!this.routePrefix)throw"route-prefix is a required parameter";this.dataProvider=new vd(this.routePrefix)}else"proto"===this.servingMode&&null!=a&&(this.dataProvider=new ud(a));this.dataPanel.initialize(this,this.dataProvider)};b.prototype.getLegendPointColorer=function(a){var b=
 this;return null==a||null==a.map?null:function(c,d){c=c.points[d].metadata[b.selectedColorOption.name];return null==c?"black":a.map(c)}};b.prototype.get3DLabelModeButton=function(){return this.querySelector("#labels3DMode")};b.prototype.get3DLabelMode=function(){return this.get3DLabelModeButton().active};b.prototype.adjustSelectionAndHover=function(a){this.notifySelectionChanged(a);this.notifyHoverOverPoint(void 0);this.setMouseMode(Ed.CAMERA_AND_CLICK_SELECT)};b.prototype.setMouseMode=function(a){this.querySelector("#selectMode").active=
 a===Ed.AREA_SELECT;this.projectorScatterPlotAdapter.scatterPlot.setMouseMode(a)};b.prototype.setCurrentDataSet=function(a){this.adjustSelectionAndHover([]);null!=this.dataSet&&this.dataSet.stopTSNE();null!=a&&this.normalizeData&&a.normalize();this.dim=null==a?0:a.dim[1];this.querySelector("span.numDataPoints").innerText=null==a?"0":""+a.dim[0];this.querySelector("span.dim").innerText=null==a?"0":""+a.dim[1];this.dataSet=a;this.projectionsPanel.dataSetUpdated(this.dataSet,this.originalDataSet,this.dim);
 this.projectorScatterPlotAdapter.setDataSet(this.dataSet);this.projectorScatterPlotAdapter.scatterPlot.setCameraParametersForNextCameraCreation(null,!0)};b.prototype.setupUIControls=function(){var a=this;this.querySelector("#reset-zoom").addEventListener("click",function(){a.projectorScatterPlotAdapter.scatterPlot.resetZoom();a.projectorScatterPlotAdapter.scatterPlot.startOrbitAnimation()});var b=this.querySelector("#selectMode");b.addEventListener("click",function(){a.setMouseMode(b.active?Ed.AREA_SELECT:
