@@ -9899,11 +9899,24 @@ var data_provider_config = function() {
               tensorName: a.tensorname,
               tensorShape: temp,
               tensorPath: a.tensorpath,
-              metadataPath: a.metadatapath
+              metadataPath: a.metadatapath,
+              bookmarkPath: a.bookmarkpath
             }
           ],
           modelCheckpointPath: a.modelcheckpointpath || "Demo datasets"
         };
+        if(a.spriteimagepath&&a.spritesingleimagedim){
+          temp = new Array();
+          temp = a.spritesingleimagedim.split(",");
+          for (x in temp ) {
+            temp[x] = parseInt(temp[x], 10);
+          }
+          this.projectorConfig.embeddings[0].sprite= {
+            imagePath: a.spriteimagepath,
+            singleImageDim: a.spritesingleimagedim
+          }
+        }
+
     }
     a.prototype.getEmbeddingInfo = function(a) {
         for (var b = this.projectorConfig.embeddings, d = 0; d < b.length; d++) {
